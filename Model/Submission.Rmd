@@ -1,0 +1,63 @@
+---
+title: "Submission"
+author: "Amar Dholakia, Joshua Hug, Rachael Jaffe, Wendi Qu"
+date: "6/14/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+```
+
+```{r Packages}
+library(tidyverse)
+library(lme4)
+library(lmtest)
+```
+
+
+
+```{r Read in the data}
+data<-read_csv("FINAL.csv",
+               col_names=TRUE,
+               col_types=c("ffffdddddd"))
+
+# Center the data 
+
+centered<-data%>% mutate(casesT=scale(casesT,scale=FALSE)[,1],
+                         Pctpov=scale(Pctpov,scale=FALSE)[,1],
+                         HSGr=scale(HSGr,scale=FALSE)[,1],
+                         Health=scale(Health,scale=FALSE)[,1])
+
+
+
+```
+
+```{r Basic Histogram}
+
+data%>% 
+  ggplot(aes(logit_JLR)) + 
+  geom_histogram(bins=100) +
+  theme_minimal()+
+  ggtitle("A histogram of the logit Job loss Rate")
+
+
+
+```
+
+
+```{r Formula}
+formulalmm<-logit_JLR~casesT+Pctpov+HSGr+Health+(1|STATE)
+
+
+model<-lmer(formula=formulalmm,data=centered,REML=FALSE)
+```
+
+
+
+```{r Model Summary}
+summary(model)
+```
+
+
