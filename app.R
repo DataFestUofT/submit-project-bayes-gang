@@ -455,7 +455,7 @@ server <- function(input, output) {
     output$unemployment <- renderPlotly(
       ggplotly(ggplot(data_work_class, aes(x=Date, y=Value, group=1)) +
         geom_line() +
-        ggtitle(c('Number of employed persons in all industries: Apr 2019 - Apr 2020')) +
+        ggtitle(c('Number of employed persons in all industries')) +
         ylab('# Employed persons (in thousands)') +
         xlab(NULL) +
         scale_y_continuous(limits = c(125000, 160000),
@@ -464,14 +464,14 @@ server <- function(input, output) {
         theme(axis.text.x = element_text(angle = 45, hjust = 1),
               axis.text.y = element_text(angle = 0, hjust = 1),
               plot.title = element_text(hjust = 0.5)) +
-        labs(caption = "Source: The US Bureau of Labor Statistics")) 
+        labs(caption = "Source: The US Bureau of Labor Statistics", subtitle = "April 2019 - April 2020")) 
     )
     output$byindustry <- renderPlotly(
       ggplotly(unemp_total_long %>% filter(.data[["section"]] %in% input$morf) %>% 
           ggplot(aes(x=industry, y=rate, fill=section)) +
           geom_bar(stat = 'identity', position="dodge") + 
           xlab(NULL) +
-          ggtitle(c('Unemployment rate increase in major industries: Apr 2019 vs. Apr 2020')) +
+          ggtitle(c('Unemployment rate increase in major industries: April 2019 vs. April 2020')) +
           ylab('Unemployment rate increase') +
           theme(axis.text.x = element_text(angle = 45, hjust = 1),
                 plot.title = element_text(hjust = 0.5)) +
